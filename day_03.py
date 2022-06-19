@@ -15,6 +15,7 @@ elif primeira_escolha == 2:
     print("""Astrok parou, perdido em pensamentos... Realemnte valia a pena continuar em frente? Relembrou do tempo em que
 apenas desejava ser um domador de kayas, DRAGÕES gigantes que dominavam os céus de teska. Sim, uma vida tão 
 mais simples...""")
+
 elif primeira_escolha == 3:
     print("""Caiu ao chão, derrotado por si mesmo. Como escutou alguém dizer em algum tempo longiquo, nós somos nossos
 piores inimigos... Enquanto ficava caído ao chão, lutando com seus pŕoŕios pensamentos, dias se passaram... Em algum
