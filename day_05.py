@@ -26,4 +26,5 @@ for number in range(0, nr_numbers):
     list += random.choice(numbers)
 
 random.shuffle(list)
-print(''.join(list))
+
+print(f"Your password is:", ''.join(list))
