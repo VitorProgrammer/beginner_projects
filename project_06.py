@@ -1,4 +1,8 @@
 import random
+import os
+
+def clear():
+  os.system('clear') 
 
 stages = ['''
   +---+
@@ -139,6 +143,7 @@ lenght_word = len(chosen_word)
 
 while display != correct: 
     guess = input("Guess a letter: ").lower()
+    clear()
     if guess in display:
         print(f"You've already guessed {guess}.\n")
     if guess not in correct:
@@ -146,15 +151,21 @@ while display != correct:
     for position in range(lenght_word):
         letter = chosen_word[position]
         if letter == guess:
-            display[position] = letter   
+            display[position] = letter 
 
+    if guess in correct:
+      print("Nice!\n")
     print(display)
+
     if display == correct:
-        print(f"You win!\nThe word is {' '.join(correct)}.")
+        print(f"You win!\nThe word is {chosen_word}.")
+
+    if guess in correct:
+      print(f"{stages[lifes]}") 
 
     if guess not in correct:    
-        lifes -= 1
-        print(f"{stages[lifes]}")
-        if lifes == 0:
-            print(f"You lose!\nThe word is {' '.join(correct)}.")
-            break
+      lifes -= 1
+      print(f"{stages[lifes]}")
+      if lifes == 0:
+        print(f"You lose!\nThe word is {chosen_word}.")
+        break
