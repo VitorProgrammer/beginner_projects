@@ -1,12 +1,7 @@
 import random
 import os
 
-def clearConsole():
-    command = 'clear'
-    os.system(command)
-
-def game():
-    logo = """
+logo = """
 .------.            _     _            _    _            _    
 |A_  _ |.          | |   | |          | |  (_)          | |   
 |( \/ ).-----.     | |__ | | __ _  ___| | ___  __ _  ___| | __
@@ -16,106 +11,83 @@ def game():
       |  \/ K|                            _/ |                
       `------'                           |__/           
 """
-                   
 
-                                      
-     
-    print(logo)
-
-    end_game = False
-    want_more = True
-    cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-
-    user_cards = []
-    dealer_cards = []
-    user_cards.append(random.choice(cards))
-    user_cards.append(random.choice(cards))
-
-    dealer_cards.append(random.choice(cards))
-    dealer_cards.append(random.choice(cards))
-
-    user_hand_total = sum(user_cards)
-    dealer_hand_total = sum(dealer_cards)
+def clearConsole():
+    command = 'clear'
+    os.system(command)
     
-    print(f"Your cards are {user_cards}.")
-    print(f"The first Dealer card is {dealer_cards[0]}.")
+def deal_card():
+  """Returns a random card from the deck."""
+  cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+  card = random.choice(cards)
+  return card
 
-    while want_more is True: 
-        if user_hand_total and dealer_hand_total == 21: 
-            print(f"The dealer cards are: {dealer_cards}, the sum is {dealer_hand_total}. You Lose!")
-            end_game = True
-            want_more = False
-            break
-        elif dealer_hand_total == 21:
-            print(f"The dealer cards are: {dealer_cards}, the sum is {dealer_hand_total}. You Lose!")
-            end_game = True
-            want_more = False
-            break
-        elif user_hand_total == 21:
-            print(f"Your cards are: {user_cards}, the sum is {user_hand_total}. You Win!")
-            end_game = True
-            want_more = False
-            break
-        elif user_hand_total > 21:
-            if(11 in user_cards):
-                for number in user_cards:
-                    if number == 11:
-                        number = 1
-                        print("Your ace now has a value of: 1")
-            else:
-                want_more = False
-                break
+def calculate_score(cards):
+  """Take a list of cards and return the score calculated from the cards"""
 
-        again_1 = input("\nDo you want another card? 'y' or 'n': ")
+  if sum(cards) == 21 and len(cards) == 2:
+    return 0 
+  if 11 in cards and sum(cards) > 21:
+    cards.remove(11)
+    cards.append(1)
+  return sum(cards)
 
-        if end_game == False:
-            if again_1 == "n":
-                while dealer_hand_total < 16:
-                    dealer_cards.append(random.choice(cards))
-                    dealer_hand_total = sum(dealer_cards)
-                    if dealer_hand_total > 21:
-                        if(11 in dealer_cards):
-                            for number in user_cards:
-                                if number == 11:
-                                    number = 1
-                                    print("Your ace now has a value of: 1")
+def compare(user_score, computer_score): 
+  if user_score > 21 and computer_score > 21:
+    return "You went over. You lose 😤"
 
-                want_more = False
-            elif again_1 == "y":    
-                user_cards.append(random.choice(cards))
-                print(f"Your cards are: {user_cards}.")
-                
-        user_hand_total = sum(user_cards)
-        dealer_hand_total = sum(dealer_cards)
+  if user_score == computer_score:
+    return "Draw 🙃"
+  elif computer_score == 0:
+    return "Lose, opponent has Blackjack 😱"
+  elif user_score == 0:
+    return "Win with a Blackjack 😎"
+  elif user_score > 21:
+    return "You went over. You lose 😭"
+  elif computer_score > 21:
+    return "Opponent went over. You win 😁"
+  elif user_score > computer_score:
+    return "You win 😃"
+  else:
+    return "You lose 😤"
 
-        if user_hand_total > 21:
-            want_more = False
-        
-    if end_game == False:
-        print(f"\nYour cards are {user_cards}. And the sum are {user_hand_total}!")
-        print(f"The Dealer cards are {dealer_cards}. And the sum are: {dealer_hand_total}!\n")
+def play_game():
 
-        if user_hand_total > dealer_hand_total and user_hand_total <= 21:
-            print("You Win!!!")
-        elif user_hand_total == dealer_hand_total:
-            print("It's a draw!!!")
-        elif dealer_hand_total > 21:
-            print("You Win!!!")
-        else:
-            print("You Lose!!!")
-    
-    new_game = input("\nDo you want to play a new game? 'y' or 'n': ")
-    if new_game == "y":
-        clearConsole()
-        game()
-    else:
-        print("Have a nice dayyy!!!")
+  print(logo)
 
-game()
+  user_cards = []
+  computer_cards = []
+  is_game_over = False
 
+  for _ in range(2):
+    user_cards.append(deal_card())
+    computer_cards.append(deal_card())
 
+  while not is_game_over:
+    user_score = calculate_score(user_cards)
+    computer_score = calculate_score(computer_cards)
+    print(f"   Your cards: {user_cards}, current score: {user_score}")
+    print(f"   Computer's first card: {computer_cards[0]}")
 
+    if user_score == 0 or computer_score == 0 or user_score > 21:
+      is_game_over = True
+    else:   
+      user_should_deal = input("Type 'y' to get another card, type 'n' to pass: ")
+      if user_should_deal == "y":
+        user_cards.append(deal_card())
+      else:
+        is_game_over = True
+  
+  while computer_score != 0 and computer_score < 17:
+    computer_cards.append(deal_card())
+    computer_score = calculate_score(computer_cards)
 
+  print(f"   Your final hand: {user_cards}, final score: {user_score}")
+  print(f"   Computer's final hand: {computer_cards}, final score: {computer_score}")
+  print(compare(user_score, computer_score))
 
+while input("Do you want to play a game of Blackjack? Type 'y' or 'n': ") == "y":
+  clearConsole()
+  play_game()
 
 
