@@ -1,5 +1,3 @@
-from ast import Global
-
 MENU = {
     "espresso": {
         "ingredients": {
@@ -32,9 +30,9 @@ resources = {
     "coffee": 100,
 }
 
-
 money = 0
 on = True
+
 
 def report():
     print(f"Water: {resources['water']}ml")
@@ -81,6 +79,7 @@ while on == True:
         print("\nHello Boss, you are in the mannager tools.")
         while True:
             boss_choice = int(input("\nWhat's your choice:\n1 - add 500ml water.\n2 - add 400ml milk\n3 - add 300g coffee.\n4 - View actual resources.\n5 - Turn the machine off for maintence.\n6 - Withdraw the money.\n7 - exit.\n"))
+            
             if boss_choice == 1:
                 resources["water"] += 500
                 print(f"\nThe new resources are:")
@@ -101,16 +100,20 @@ while on == True:
                 break
             elif boss_choice == 6:
                 withdraw_money = float(input(f"Total money: {money}. How much do you want to withdraw?\n"))
+                
                 if withdraw_money > money:
                     print("\nNot enoght founds.\n")
                 else:
                     money -= withdraw_money
                 report()
+
             else:
                 print("\nBye bye boss!")
                 break
+
     elif user_choice == "espresso" or user_choice == "latte" or user_choice == "cappuccino":
         print(f"\nPlease, insert the coins. The cost of the {user_choice} is ${MENU[user_choice]['cost']}.")
+        
         if money_user(user_choice) == False:
             print("Sorry, you dont have enought money.")
         elif menu(user_choice) == False:
@@ -119,6 +122,7 @@ while on == True:
         else:
             menu(user_choice) 
             print(f"Here is your {user_choice}, enjoy!")
+            
     else:
         print("Invalid Command.")
         
