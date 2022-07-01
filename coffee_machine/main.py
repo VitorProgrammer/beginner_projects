@@ -1,5 +1,37 @@
 from ast import Global
-from datas import resources, MENU
+
+MENU = {
+    "espresso": {
+        "ingredients": {
+            "water": 50,
+            "coffee": 18,
+        },
+        "cost": 1.5,
+    },
+    "latte": {
+        "ingredients": {
+            "water": 200,
+            "milk": 150,
+            "coffee": 24,
+        },
+        "cost": 2.5,
+    },
+    "cappuccino": {
+        "ingredients": {
+            "water": 250,
+            "milk": 100,
+            "coffee": 24,
+        },
+        "cost": 3.0,
+    }
+}
+
+resources = {
+    "water": 300,
+    "milk": 200,
+    "coffee": 100,
+}
+
 
 money = 0
 on = True
@@ -30,8 +62,6 @@ def menu(choice):
             money += MENU[choice]["cost"] 
 
 
-
-
 def money_user(choice):
     quarters = int(input("\nHow many quarters(0.25)? ")) * 0.25
     dimes = int(input("How many dimes(0.10)? ")) * 0.10
@@ -43,13 +73,14 @@ def money_user(choice):
     else: 
         print(f"\nHere is ${money_total - MENU[choice]['cost']:.2f} in change.")
 
+
 while on == True:
     user_choice = input("\nWhat would you like? (espresso / latte / cappuccino): " )
 
     if user_choice == "boss":
         print("\nHello Boss, you are in the mannager tools.")
         while True:
-            boss_choice = int(input("\nWhat's your choice:\n1 - add 500ml water.\n2 - add 400ml milk\n3 - add 300g coffee.\n4 - View actual resources.\n5 - Turn the machine off for maintence.\n6 - exit.\n"))
+            boss_choice = int(input("\nWhat's your choice:\n1 - add 500ml water.\n2 - add 400ml milk\n3 - add 300g coffee.\n4 - View actual resources.\n5 - Turn the machine off for maintence.\n6 - Withdraw the money.\n7 - exit.\n"))
             if boss_choice == 1:
                 resources["water"] += 500
                 print(f"\nThe new resources are:")
@@ -66,7 +97,15 @@ while on == True:
                 report()
             elif boss_choice == 5:
                 on = False
+                print("\nBye bye boss!")
                 break
+            elif boss_choice == 6:
+                withdraw_money = float(input(f"Total money: {money}. How much do you want to withdraw?\n"))
+                if withdraw_money > money:
+                    print("\nNot enoght founds.\n")
+                else:
+                    money -= withdraw_money
+                report()
             else:
                 print("\nBye bye boss!")
                 break
